@@ -3,32 +3,18 @@ lines = input.split("\n")
 
 
 nums = []
-nums2 = [0] * len(lines) + [0]
+nums2 = [0] * (len(lines) + 1)
 
 for i, line in enumerate(lines):
-    game = line.split(":")[1]
+    _, game = line.split(":", 1)
+    wins, checks = [set(g.split()) for g in game.split("|")]
 
-    s = set()
-    count = 0
-    for win in game.split("|")[0].split(" "):
-        if win != "":
-            s.add(win)
-
-    for c in game.split("|")[1].split(" "):
-        if c in s:
-            count += 1
-
+    count = len(wins & checks)
     if count > 0:
         nums.append(2 ** (count - 1))
-
-        # part 2
-        # go through all games
         for j in range(i + 2, i + count + 2):
             nums2[j] += nums2[i + 1] + 1
-            pass
-
 
 nums2 = [num + 1 for num in nums2][1:]
-print(sum(nums))
-# print(nums2)
-print(sum(nums2))
+print(f"Part1: {sum(nums)}")
+print(f"Part2: {sum(nums2)}")
