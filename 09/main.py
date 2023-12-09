@@ -1,40 +1,20 @@
-lines = open("input.txt").read().splitlines()
-
-nums = []
-nums1 = []
-
-
-def is_zero(vec):
-    for i in vec:
-        if i != 0:
-            return False
-    return True
+lines = [
+    [int(i) for i in s.split()]
+    for s in open("input.txt").read().split("\n")
+    if s.strip()
+]
 
 
-for line in lines:
-    row = [int(x) for x in line.split(" ")]
-
-    diff_f = [row[i + 1] - row[i] for i in range(len(row) - 1)]
+def solve(line):
+    diff_f = [line[i + 1] - line[i] for i in range(len(line) - 1)]
 
     last_diff = [diff_f[-1]]
-    first_diff = [row[0], diff_f[0]]
-
-    while not is_zero(diff_f):
+    while not all([x == 0 for x in diff_f]):
         diff_f = [diff_f[i + 1] - diff_f[i] for i in range(len(diff_f) - 1)]
         last_diff.append(diff_f[-1])
-        first_diff.append(diff_f[0])
 
-    # part 1
-    nums.append(row[-1] + sum(last_diff))
+    return line[-1] + sum(last_diff)
 
-    ans = [0]
-    for i in range(len(first_diff) - 1, -1, -1):
-        ans.append(first_diff[i - 1] - ans[len(first_diff) - 1 - i])
 
-    # part 2
-    nums1.append(ans[-2])
-
-# print(nums)
-print(sum(nums))
-# print(nums1)
-print(sum(nums1))
+print(sum(solve(line) for line in lines))
+print(sum(solve(line[::-1]) for line in lines))
