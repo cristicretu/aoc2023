@@ -25,3 +25,5 @@ while True:
     elif direction == "R":
         curr = dict[curr][1]
         steps += 1
+
+# Part 2
